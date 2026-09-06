@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CronIQ - Nueva partida</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header>
+    <a href="index.html">&larr; Inicio</a>
+    <h1>Nueva partida</h1>
+  </header>
+
+  <main>
+    <form id="setup-form">
+      <section>
+        <h2>Grupos</h2>
+        <ul id="group-list" class="group-list"></ul>
+        <button id="add-group-button" class="button button-ghost" type="button">+ Agregar grupo</button>
+      </section>
+
+      <p id="setup-errors" class="alert" role="alert" hidden></p>
+
+      <button class="button button-primary button-large" type="submit">Empezar partida</button>
+    </form>
+  </main>
+
+  <template id="group-template">
+    <li class="group-item">
+      <button class="remove-group-button" type="button" aria-label="Quitar grupo">&times;</button>
+      <label class="field">
+        <span class="field-label">Nombre del grupo</span>
+        <input class="group-name-input" type="text" required>
+      </label>
+      <label class="field field-color">
+        <span class="field-label">Color</span>
+        <input class="group-color-input" type="color">
+      </label>
+      <fieldset class="group-packs-fieldset">
+        <legend>Packs a los que se suscribe</legend>
+      </fieldset>
+    </li>
+  </template>
+
+  <script type="module" src="js/setup/setup-app.js"></script>
+</body>
+</html>

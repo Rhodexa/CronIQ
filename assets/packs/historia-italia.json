@@ -1,0 +1,44 @@
+{
+  "id": "historia-italia",
+  "name": "Historia de Italia",
+  "category": "Historia",
+  "color": "#3b8f4f",
+  "questions": [
+    {
+      "id": "it-1",
+      "text": "¿En qué año se proclamó el Reino de Italia, marcando su unificación?",
+      "options": ["1848", "1861", "1870", "1900"],
+      "correctIndex": 1
+    },
+    {
+      "id": "it-2",
+      "text": "¿Cómo se conoce al movimiento de unificación italiana del siglo XIX?",
+      "options": ["Risorgimento", "Renacimiento", "Resistencia", "Reforma"],
+      "correctIndex": 0
+    },
+    {
+      "id": "it-3",
+      "text": "¿Quién fue el líder militar conocido por la expedición de los Mil Camisas Rojas?",
+      "options": ["Camillo Cavour", "Victor Manuel II", "Giuseppe Garibaldi", "Giuseppe Mazzini"],
+      "correctIndex": 2
+    },
+    {
+      "id": "it-4",
+      "text": "¿En qué año cayó el Imperio Romano de Occidente?",
+      "options": ["376 d.C.", "410 d.C.", "455 d.C.", "476 d.C."],
+      "correctIndex": 3
+    },
+    {
+      "id": "it-5",
+      "text": "¿Qué ciudad italiana fue la cuna del Renacimiento?",
+      "options": ["Roma", "Venecia", "Florencia", "Milán"],
+      "correctIndex": 2
+    },
+    {
+      "id": "it-6",
+      "text": "¿En qué año llegó Benito Mussolini al poder tras la Marcha sobre Roma?",
+      "options": ["1919", "1922", "1929", "1936"],
+      "correctIndex": 1
+    }
+  ]
+}

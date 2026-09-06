@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3)",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Bash(npm ls *)",
+      "Bash(find / -maxdepth 6 -iname \"chromium-cli*\")",
+      "Bash(command -v chromium-cli)",
+      "Bash(npm config *)",
+      "Bash(timeout 5 curl -sI https://registry.npmjs.org/playwright)",
+      "Bash(npx playwright *)",
+      "Bash(node drive.js)",
+      "Bash(lsof -ti:8123 -sTCP:LISTEN)"
+    ]
+  }
+}

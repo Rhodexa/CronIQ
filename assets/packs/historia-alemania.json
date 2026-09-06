@@ -1,0 +1,44 @@
+{
+  "id": "historia-alemania",
+  "name": "Historia de Alemania",
+  "category": "Historia",
+  "color": "#c9a227",
+  "questions": [
+    {
+      "id": "de-1",
+      "text": "¿En qué año se unificó el Imperio Alemán bajo Prusia?",
+      "options": ["1848", "1861", "1871", "1890"],
+      "correctIndex": 2
+    },
+    {
+      "id": "de-2",
+      "text": "¿Quién fue el canciller conocido como el 'Canciller de Hierro'?",
+      "options": ["Otto von Bismarck", "Konrad Adenauer", "Paul von Hindenburg", "Guillermo II"],
+      "correctIndex": 0
+    },
+    {
+      "id": "de-3",
+      "text": "¿En qué año cayó el Muro de Berlín?",
+      "options": ["1985", "1989", "1991", "1993"],
+      "correctIndex": 1
+    },
+    {
+      "id": "de-4",
+      "text": "¿Qué tratado puso fin oficialmente a la Primera Guerra Mundial para Alemania?",
+      "options": ["Tratado de Versalles", "Tratado de Berlín", "Tratado de Viena", "Tratado de Postdam"],
+      "correctIndex": 0
+    },
+    {
+      "id": "de-5",
+      "text": "¿En qué año se reunificaron Alemania Oriental y Occidental?",
+      "options": ["1988", "1989", "1990", "1991"],
+      "correctIndex": 2
+    },
+    {
+      "id": "de-6",
+      "text": "¿Qué imperio alemán antecedió al Imperio Alemán de 1871?",
+      "options": ["Sacro Imperio Romano Germánico", "Imperio Austrohúngaro", "Confederación del Rin", "Liga Hanseática"],
+      "correctIndex": 0
+    }
+  ]
+}
