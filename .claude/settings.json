@@ -10,7 +10,9 @@
       "Bash(timeout 5 curl -sI https://registry.npmjs.org/playwright)",
       "Bash(npx playwright *)",
       "Bash(node drive.js)",
-      "Bash(lsof -ti:8123 -sTCP:LISTEN)"
+      "Bash(lsof -ti:8123 -sTCP:LISTEN)",
+      "Bash(node shot.js)",
+      "Bash(python3 -m http.server 8000)"
     ]
   }
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CronIQ - Cargar packs</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<header>
+		<a class="back-link" href="index.html" style="padding: 1rem; border-radius: 50%; aspect-ratio: 1 / 1">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+		</a>
+		<h1>Cargar packs</h1>
+	</header>
+
+	<main>
+		<p class="app-subtitle">Cargá los archivos de preguntas (.json) que vas a usar en esta partida.</p>
+
+		<label class="button button-ghost button-large" for="pack-file-input">
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+			Cargar pack (JSON)
+		</label>
+		<input id="pack-file-input" type="file" accept="application/json" multiple hidden>
+
+		<p id="import-error" class="alert" role="alert" hidden></p>
+
+		<h2>Packs para esta partida</h2>
+		<ul id="loaded-pack-list" class="loaded-pack-list"></ul>
+
+		<p id="pack-select-errors" class="alert" role="alert" hidden></p>
+
+		<button id="continue-button" class="button button-primary button-large" type="button">
+			Continuar
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+		</button>
+	</main>
+
+	<script type="module" src="js/pack-select/pack-select-app.js"></script>
+</body>
+</html>

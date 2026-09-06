@@ -1,11 +1,11 @@
 import {
-  loadAllPacks,
-  savePack,
-  deletePack,
-  exportPack,
-  importPackFromFile,
-  createEmptyQuestion,
-  validatePack,
+	loadAllPacks,
+	savePack,
+	deletePack,
+	exportPack,
+	importPackFromFile,
+	createEmptyQuestion,
+	validatePack,
 } from '../core/packs-repository.js';
 
 const packListEl = document.getElementById('pack-list');
@@ -28,91 +28,97 @@ const questionTemplate = document.getElementById('question-template');
 let editingPackId = null;
 
 async function refreshPackList() {
-  const packs = await loadAllPacks();
-  packListEl.innerHTML = '';
-  packs.forEach((pack) => {
-    const li = document.createElement('li');
-    const label = pack.isBuiltin ? `${pack.name} (predeterminado)` : pack.name;
+	const packs = await loadAllPacks();
+	packListEl.innerHTML = '';
+	packs.forEach((pack) => {
+		const li = document.createElement('li');
+		const label = pack.isBuiltin ? `${pack.name} (predeterminado)` : pack.name;
 
-    const info = document.createElement('span');
-    info.textContent = `${label} — ${pack.category} — ${pack.questions.length} preguntas`;
-    li.appendChild(info);
+		const info = document.createElement('span');
+		info.textContent = `${label} — ${pack.category} — ${pack.questions.length} preguntas`;
+		li.appendChild(info);
 
-    const exportButton = document.createElement('button');
-    exportButton.type = 'button';
-    exportButton.textContent = 'Exportar';
-    exportButton.addEventListener('click', () => exportPack(pack));
-    li.appendChild(exportButton);
+		const exportButton = document.createElement('button');
+		exportButton.type = 'button';
+		exportButton.textContent = 'Exportar';
+		exportButton.addEventListener('click', () => exportPack(pack));
+		li.appendChild(exportButton);
 
-    if (!pack.isBuiltin) {
-      const editButton = document.createElement('button');
-      editButton.type = 'button';
-      editButton.textContent = 'Editar';
-      editButton.addEventListener('click', () => openPackForm(pack));
-      li.appendChild(editButton);
+		if (!pack.isBuiltin) {
+			const editButton = document.createElement('button');
+			editButton.type = 'button';
+			editButton.className = 'icon-button';
+			editButton.setAttribute('aria-label', 'Editar pack');
+			editButton.innerHTML =
+				'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>';
+			editButton.addEventListener('click', () => openPackForm(pack));
+			li.appendChild(editButton);
 
-      const deleteButton = document.createElement('button');
-      deleteButton.type = 'button';
-      deleteButton.textContent = 'Eliminar';
-      deleteButton.addEventListener('click', () => {
-        deletePack(pack.id);
-        refreshPackList();
-      });
-      li.appendChild(deleteButton);
-    }
+			const deleteButton = document.createElement('button');
+			deleteButton.type = 'button';
+			deleteButton.className = 'icon-button icon-button-danger';
+			deleteButton.setAttribute('aria-label', 'Eliminar pack');
+			deleteButton.innerHTML =
+				'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+			deleteButton.addEventListener('click', () => {
+				deletePack(pack.id);
+				refreshPackList();
+			});
+			li.appendChild(deleteButton);
+		}
 
-    packListEl.appendChild(li);
-  });
+		packListEl.appendChild(li);
+	});
 }
 
 function addQuestionRow(question) {
-  const fragment = questionTemplate.content.cloneNode(true);
-  const li = fragment.querySelector('.question-item');
-  const groupName = `correct-${crypto.randomUUID()}`;
+	const fragment = questionTemplate.content.cloneNode(true);
+	const li = fragment.querySelector('.question-item');
+	const groupName = `correct-${crypto.randomUUID()}`;
 
-  li.querySelector('.question-text-input').value = question.text;
-  const optionInputs = li.querySelectorAll('.option-text-input');
-  optionInputs.forEach((input, index) => {
-    input.value = question.options[index];
-  });
-  const radios = li.querySelectorAll('.option-correct-radio');
-  radios.forEach((radio, index) => {
-    radio.name = groupName;
-    radio.checked = index === question.correctIndex;
-  });
+	li.querySelector('.question-text-input').value = question.text;
+	const optionInputs = li.querySelectorAll('.option-text-input');
+	optionInputs.forEach((input, index) => {
+		input.value = question.options[index];
+	});
+	const radios = li.querySelectorAll('.option-correct-radio');
+	radios.forEach((radio, index) => {
+		radio.name = groupName;
+		radio.checked = index === question.correctIndex;
+	});
 
-  li.querySelector('.remove-question-button').addEventListener('click', () => li.remove());
-  questionListEl.appendChild(li);
+	li.querySelector('.remove-question-button').addEventListener('click', () => li.remove());
+	questionListEl.appendChild(li);
 }
 
 function openPackForm(pack) {
-  editingPackId = pack ? pack.id : null;
-  formTitle.textContent = pack ? `Editando: ${pack.name}` : 'Nuevo pack';
-  nameInput.value = pack ? pack.name : '';
-  categoryInput.value = pack ? pack.category : '';
-  colorInput.value = pack ? pack.color : '#888888';
-  questionListEl.innerHTML = '';
-  formErrorsEl.hidden = true;
+	editingPackId = pack ? pack.id : null;
+	formTitle.textContent = pack ? `Editando: ${pack.name}` : 'Nuevo pack';
+	nameInput.value = pack ? pack.name : '';
+	categoryInput.value = pack ? pack.category : '';
+	colorInput.value = pack ? pack.color : '#888888';
+	questionListEl.innerHTML = '';
+	formErrorsEl.hidden = true;
 
-  const questions = pack ? pack.questions : [createEmptyQuestion()];
-  questions.forEach(addQuestionRow);
+	const questions = pack ? pack.questions : [createEmptyQuestion()];
+	questions.forEach(addQuestionRow);
 
-  formSection.hidden = false;
+	formSection.hidden = false;
 }
 
 function closePackForm() {
-  formSection.hidden = true;
-  editingPackId = null;
+	formSection.hidden = true;
+	editingPackId = null;
 }
 
 function readQuestionsFromForm() {
-  return Array.from(questionListEl.querySelectorAll('.question-item')).map((li) => {
-    const text = li.querySelector('.question-text-input').value;
-    const options = Array.from(li.querySelectorAll('.option-text-input')).map((input) => input.value);
-    const checkedRadio = li.querySelector('.option-correct-radio:checked');
-    const correctIndex = checkedRadio ? Number(checkedRadio.value) : -1;
-    return { text, options, correctIndex };
-  });
+	return Array.from(questionListEl.querySelectorAll('.question-item')).map((li) => {
+		const text = li.querySelector('.question-text-input').value;
+		const options = Array.from(li.querySelectorAll('.option-text-input')).map((input) => input.value);
+		const checkedRadio = li.querySelector('.option-correct-radio:checked');
+		const correctIndex = checkedRadio ? Number(checkedRadio.value) : -1;
+		return { text, options, correctIndex };
+	});
 }
 
 newPackButton.addEventListener('click', () => openPackForm(null));
@@ -120,37 +126,37 @@ cancelButton.addEventListener('click', closePackForm);
 addQuestionButton.addEventListener('click', () => addQuestionRow(createEmptyQuestion()));
 
 form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const pack = {
-    id: editingPackId,
-    name: nameInput.value,
-    category: categoryInput.value,
-    color: colorInput.value,
-    questions: readQuestionsFromForm(),
-  };
-  const errors = validatePack(pack);
-  if (errors.length > 0) {
-    formErrorsEl.hidden = false;
-    formErrorsEl.textContent = errors.join(' ');
-    return;
-  }
-  savePack(pack);
-  closePackForm();
-  refreshPackList();
+	event.preventDefault();
+	const pack = {
+		id: editingPackId,
+		name: nameInput.value,
+		category: categoryInput.value,
+		color: colorInput.value,
+		questions: readQuestionsFromForm(),
+	};
+	const errors = validatePack(pack);
+	if (errors.length > 0) {
+		formErrorsEl.hidden = false;
+		formErrorsEl.textContent = errors.join(' ');
+		return;
+	}
+	savePack(pack);
+	closePackForm();
+	refreshPackList();
 });
 
 importInput.addEventListener('change', async () => {
-  const file = importInput.files[0];
-  if (!file) return;
-  importErrorEl.hidden = true;
-  try {
-    await importPackFromFile(file);
-    refreshPackList();
-  } catch (error) {
-    importErrorEl.hidden = false;
-    importErrorEl.textContent = error.message;
-  }
-  importInput.value = '';
+	const file = importInput.files[0];
+	if (!file) return;
+	importErrorEl.hidden = true;
+	try {
+		await importPackFromFile(file);
+		refreshPackList();
+	} catch (error) {
+		importErrorEl.hidden = false;
+		importErrorEl.textContent = error.message;
+	}
+	importInput.value = '';
 });
 
 refreshPackList();

@@ -1,58 +1,58 @@
 <!DOCTYPE html>
 <html lang="es-AR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CronIQ - Partida</title>
-  <link rel="stylesheet" href="css/main.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CronIQ - Partida</title>
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <header>
-    <a href="index.html">&larr; Inicio</a>
-    <h1>Partida</h1>
-  </header>
+	<header>
+		<a href="index.html">&larr; Inicio</a>
+		<h1>Partida</h1>
+	</header>
 
-  <main>
-    <section id="scoreboard-section">
-      <h2>Puntajes</h2>
-      <ul id="scoreboard-list"></ul>
-    </section>
+	<main>
+		<section id="scoreboard-section">
+			<h2>Puntajes</h2>
+			<ul id="scoreboard-list"></ul>
+		</section>
 
-    <section id="play-section">
-      <p id="turn-indicator"></p>
-      <p id="feedback-message"></p>
+		<section id="play-section">
+			<p id="turn-indicator"></p>
+			<p id="feedback-message"></p>
 
-      <div id="draw-controls">
-        <label id="pack-override-label" hidden>
-          Elegir pack
-          <select id="pack-override-select"></select>
-        </label>
-        <button id="draw-question-button" type="button">Sacar pregunta</button>
-      </div>
+			<div id="draw-controls">
+				<label id="pack-override-label" hidden>
+					Elegir pack
+					<select id="pack-override-select"></select>
+				</label>
+				<button id="draw-question-button" type="button">Sacar pregunta</button>
+			</div>
 
-      <div id="question-display" hidden>
-        <p id="question-text"></p>
-        <ul id="options-list"></ul>
-      </div>
+			<div id="question-display" hidden>
+				<p id="question-text"></p>
+				<ul id="options-list"></ul>
+			</div>
 
-      <div id="gm-controls">
-        <label>
-          Forzar turno de
-          <select id="group-override-select"></select>
-        </label>
-        <button id="override-group-button" type="button">Forzar turno</button>
-      </div>
+			<div id="gm-controls">
+				<label>
+					Forzar turno de
+					<select id="group-override-select"></select>
+				</label>
+				<button id="override-group-button" type="button">Forzar turno</button>
+			</div>
 
-      <button id="finish-game-button" type="button">Finalizar partida</button>
-    </section>
+			<button id="finish-game-button" type="button">Finalizar partida</button>
+		</section>
 
-    <section id="ranking-section" hidden>
-      <h2>Resultado final</h2>
-      <ol id="ranking-list"></ol>
-      <a href="game-setup.html">Nueva partida</a>
-    </section>
-  </main>
+		<section id="ranking-section" hidden>
+			<h2>Resultado final</h2>
+			<ol id="ranking-list"></ol>
+			<a href="pack-select.html">Nueva partida</a>
+		</section>
+	</main>
 
-  <script type="module" src="js/game/game-app.js"></script>
+	<script type="module" src="js/game/game-app.js"></script>
 </body>
 </html>

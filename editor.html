@@ -1,73 +1,80 @@
 <!DOCTYPE html>
 <html lang="es-AR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CronIQ - Editor de preguntas</title>
-  <link rel="stylesheet" href="css/main.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CronIQ - Editar preguntas</title>
+	<link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
-  <header>
-    <a href="index.html">&larr; Inicio</a>
-    <h1>Editor de preguntas</h1>
-  </header>
+	<header>
+		<a href="index.html">&larr; Inicio</a>
+		<h1>Editor de preguntas</h1>
+	</header>
 
-  <main>
-    <section id="pack-list-section">
-      <h2>Packs de preguntas</h2>
-      <ul id="pack-list"></ul>
-      <button id="new-pack-button" type="button">Nuevo pack</button>
-      <label>
-        Importar pack (JSON)
-        <input id="import-pack-input" type="file" accept="application/json">
-      </label>
-      <p id="import-error" role="alert" hidden></p>
-    </section>
+	<main>
+		<section id="pack-list-section">
+			<h2>Packs de preguntas</h2>
+			<ul id="pack-list"></ul>
+			<button id="new-pack-button" type="button">Nuevo pack</button>
+			<label>
+				Importar pack (JSON)
+				<input id="import-pack-input" type="file" accept="application/json">
+			</label>
+			<p id="import-error" role="alert" hidden></p>
+		</section>
 
-    <section id="pack-form-section" hidden>
-      <h2 id="pack-form-title">Nuevo pack</h2>
-      <form id="pack-form">
-        <label>
-          Nombre
-          <input id="pack-name-input" type="text" required>
-        </label>
-        <label>
-          Categoría
-          <input id="pack-category-input" type="text" required>
-        </label>
-        <label>
-          Color
-          <input id="pack-color-input" type="color" value="#888888">
-        </label>
+		<section id="pack-form-section" hidden>
+			<h2 id="pack-form-title">Nuevo pack</h2>
+			<form id="pack-form">
+				<label>
+					Nombre
+					<input id="pack-name-input" type="text" required>
+				</label>
+				<label>
+					Categoría
+					<input id="pack-category-input" type="text" required>
+				</label>
+				<label>
+					Color
+					<input id="pack-color-input" type="color" value="#888888">
+				</label>
 
-        <h3>Preguntas</h3>
-        <ul id="question-list"></ul>
-        <button id="add-question-button" type="button">Agregar pregunta</button>
+				<h3>Preguntas</h3>
+				<ul id="question-list"></ul>
+				<button id="add-question-button" type="button">Agregar pregunta</button>
 
-        <p id="pack-form-errors" role="alert" hidden></p>
+				<p id="pack-form-errors" role="alert" hidden></p>
 
-        <button type="submit">Guardar pack</button>
-        <button id="cancel-pack-button" type="button">Cancelar</button>
-      </form>
-    </section>
-  </main>
+				<button type="submit">Guardar pack</button>
+				<button id="cancel-pack-button" type="button">Cancelar</button>
+			</form>
+		</section>
+	</main>
 
-  <template id="question-template">
-    <li class="question-item">
-      <label>
-        Pregunta
-        <input class="question-text-input" type="text" required>
-      </label>
-      <div class="question-options">
-        <label><input type="radio" class="option-correct-radio" value="0"> <input class="option-text-input" data-index="0" type="text" required></label>
-        <label><input type="radio" class="option-correct-radio" value="1"> <input class="option-text-input" data-index="1" type="text" required></label>
-        <label><input type="radio" class="option-correct-radio" value="2"> <input class="option-text-input" data-index="2" type="text" required></label>
-        <label><input type="radio" class="option-correct-radio" value="3"> <input class="option-text-input" data-index="3" type="text" required></label>
-      </div>
-      <button class="remove-question-button" type="button">Eliminar pregunta</button>
-    </li>
-  </template>
+	<template id="question-template">
+		<li class="question-item">
+			<label>
+				Pregunta
+				<input class="question-text-input" type="text" required>
+			</label>
+			<div class="question-options">
+				<label><input type="radio" class="option-correct-radio" value="0"> <input class="option-text-input"
+						data-index="0" type="text" required></label>
+				<label><input type="radio" class="option-correct-radio" value="1"> <input class="option-text-input"
+						data-index="1" type="text" required></label>
+				<label><input type="radio" class="option-correct-radio" value="2"> <input class="option-text-input"
+						data-index="2" type="text" required></label>
+				<label><input type="radio" class="option-correct-radio" value="3"> <input class="option-text-input"
+						data-index="3" type="text" required></label>
+			</div>
+			<button class="remove-question-button" type="button">Eliminar pregunta</button>
+		</li>
+	</template>
 
-  <script type="module" src="js/editor/editor-app.js"></script>
+	<script type="module" src="js/editor/editor-app.js"></script>
 </body>
+
 </html>
