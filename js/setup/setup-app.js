@@ -14,9 +14,11 @@ const COLOR_PRESETS = [
 	'#9b59b6',
 	'#e84393',
 	'#95a5a6',
-	'#c0392b',
-	'#16a085',
+	'#ffffff',
 ];
+// Step by 6 (coprime with 11) instead of 1 so consecutive groups land far apart
+// in the sequence above instead of on neighboring, similar-looking hues.
+const DEFAULT_COLOR_STEP = 6;
 const DEFAULT_GROUP_COUNT = 2;
 
 const groupListEl = document.getElementById('group-list');
@@ -110,7 +112,7 @@ function addGroupRow() {
 	const groupState = {
 		id: generateId(),
 		subscribedPackIds: [],
-		color: COLOR_PRESETS[groupIndex % COLOR_PRESETS.length],
+		color: COLOR_PRESETS[(groupIndex * DEFAULT_COLOR_STEP) % COLOR_PRESETS.length],
 	};
 	groups.push(groupState);
 	li.dataset.groupId = groupState.id;
