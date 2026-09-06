@@ -3,7 +3,20 @@ import { generateId } from '../core/id.js';
 import { loadJSON, saveJSON } from '../core/storage.js';
 import { GameEngine } from '../engine/game-engine.js';
 
-const DEFAULT_COLORS = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6', '#e67e22'];
+const COLOR_PRESETS = [
+	'#e74c3c',
+	'#e67e22',
+	'#f1c40f',
+	'#2ecc71',
+	'#1abc9c',
+	'#3498db',
+	'#5b5bd6',
+	'#9b59b6',
+	'#e84393',
+	'#95a5a6',
+	'#c0392b',
+	'#16a085',
+];
 const DEFAULT_GROUP_COUNT = 2;
 
 const groupListEl = document.getElementById('group-list');
@@ -18,7 +31,7 @@ const packPickerConfirm = document.getElementById('pack-picker-confirm');
 
 // pool: the packs chosen on pack-select.html, available to subscribe to in this game.
 let pool = [];
-// groups: subscribedPackIds lives here (edited through the dialog); name/color stay on their inputs.
+// groups: subscribedPackIds and color live here; name stays on its own input.
 let groups = [];
 let editingGroupId = null;
 
@@ -69,20 +82,42 @@ packPickerConfirm.addEventListener('click', () => {
 	packPickerDialog.close();
 });
 
+function renderColorSwatches(li, groupState) {
+	const container = li.querySelector('.color-swatches');
+	container.innerHTML = '';
+	COLOR_PRESETS.forEach((color) => {
+		const swatch = document.createElement('button');
+		swatch.type = 'button';
+		swatch.className = 'color-swatch';
+		swatch.style.setProperty('--swatch-color', color);
+		swatch.setAttribute('aria-label', color);
+		swatch.classList.toggle('selected', color === groupState.color);
+		swatch.addEventListener('click', () => {
+			groupState.color = color;
+			li.style.setProperty('--group-color', color);
+			container.querySelectorAll('.color-swatch').forEach((el) => el.classList.remove('selected'));
+			swatch.classList.add('selected');
+		});
+		container.appendChild(swatch);
+	});
+}
+
 function addGroupRow() {
 	const groupIndex = groupListEl.children.length;
 	const fragment = groupTemplate.content.cloneNode(true);
 	const li = fragment.querySelector('.group-item');
 
-	const groupState = { id: generateId(), subscribedPackIds: [] };
+	const groupState = {
+		id: generateId(),
+		subscribedPackIds: [],
+		color: COLOR_PRESETS[groupIndex % COLOR_PRESETS.length],
+	};
 	groups.push(groupState);
 	li.dataset.groupId = groupState.id;
 
 	li.querySelector('.group-name-input').value = `Grupo ${groupIndex + 1}`;
-	const colorInput = li.querySelector('.group-color-input');
-	colorInput.value = DEFAULT_COLORS[groupIndex % DEFAULT_COLORS.length];
-	li.style.setProperty('--group-color', colorInput.value);
-	colorInput.addEventListener('input', () => li.style.setProperty('--group-color', colorInput.value));
+	li.style.setProperty('--group-color', groupState.color);
+	renderColorSwatches(li, groupState);
 
 	li.querySelector('.pack-summary-button').addEventListener('click', () => openPackPicker(groupState.id));
 	updatePackSummary(li, groupState);
@@ -103,7 +138,7 @@ function readGroupsFromForm() {
 		return {
 			id: groupState.id,
 			name: li.querySelector('.group-name-input').value,
-			color: li.querySelector('.group-color-input').value,
+			color: groupState.color,
 			subscribedPackIds: groupState.subscribedPackIds,
 		};
 	});
