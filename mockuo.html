@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>En Juego</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .answer {
+            width: 100%;
+            padding: 1.25rem 1rem;
+            border-radius: 2rem;
+            background-color: var(--color-surface-raised);
+            color: inherit;
+            font-size: 2rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .answer:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            background-color: #fff3;
+        }
+
+        .answer:active {
+            transform: translateY(0);
+        }
+        
+        .answer.selected {
+            box-shadow: 0 20px 20px #0002;
+            background-color: #fff2;
+            border: 1px solid #fff5;
+        }
+
+        .answer.correct {
+            background-color: #00ff9d6c;
+            border: 1px solid #00ff9d;
+            transform: scale(1.1) translateY(-1rem);
+            box-shadow: 0 40px 30px #0004;
+            z-index: 1000;
+        }
+
+        .answer.incorrect {
+            background-color: #ff00267c;
+            border: 1px solid #5a1a00;
+            transform: scale(0.9) rotate(3deg);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body style="min-height: 100vh; display: grid; place-items: center; margin: 0; background-color: var(--color-bg, #f4f4f4);">
+    <main style="width: 100%; max-width: 2000px; padding: 1rem; box-sizing: border-box;">
+        <div style="background-color: var(--color-surface, #ffffff); border-radius: 20px; padding: 3rem; display: flex; flex-direction: column; align-items: center;">
+            
+            <h1 style="font-weight: bold; font-size: max(2rem, 6vw); text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; margin-top: 0; border-bottom: 1px solid #fff1;">
+                ¿En qué año se estableció la república de Weimar?
+            </h1>
+
+            <div class="answers-grid" id="answers-container">
+                <button class="answer correct">1919</button>
+                <button class="answer incorrect">1933</button>
+                <button class="answer selected">1945</button>
+                <button class="answer">1871</button>
+            </div>
+        </div>
+
+        <button class="button button-large" style=" margin-top: 2rem; padding: 1.5rem 2rem; font-size: 2rem; border: 1px solid var(--color-primary); background-color: #ff00ae38;">
+            Continuar...
+        </button>
+    </main>
+</body>
+</html>

@@ -12,12 +12,17 @@
 	--color-danger: #ff6b6b;
 	--radius-sm: 8px;
 	--radius-md: 14px;
+	--radius-lg: 20px;
 	--shadow-card: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 /* Reset */
 * {
 	box-sizing: border-box;
+}
+
+[hidden] {
+	display: none !important;
 }
 
 body {
@@ -457,6 +462,217 @@ button[type="submit"]:not(.button) {
 
 .loaded-pack-list .pack-checkbox {
 	justify-content: space-between;
+}
+
+/* Full-screen stats view (gameplay resting state) — a classroom projector might
+   be a tiny, low-res 4:3 screen, so this is centered and self-contained rather
+   than a tall page that would need scrolling. */
+.stats-view {
+	min-height: calc(100dvh - 6rem);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#play-section,
+#ranking-section {
+	width: 100%;
+	text-align: center;
+}
+
+.turn-indicator {
+	font-size: clamp(1.1rem, 3vw, 1.5rem);
+	font-weight: 600;
+	margin: 0 0 1.5rem;
+}
+
+/* Scoreboard bar (gameplay header) */
+.scoreboard-bar {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.6rem;
+	margin: 0 0 1.5rem;
+	padding: 0;
+}
+
+.score-chip {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.6rem 1.1rem;
+	border-radius: 999px;
+	background: var(--color-surface);
+	border: 2px solid var(--chip-color, var(--color-surface-raised));
+	color: var(--color-text-muted);
+	font-size: 1rem;
+	font-weight: 600;
+	transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.score-chip-value {
+	color: var(--chip-color);
+	font-weight: 700;
+	font-size: 1.15rem;
+}
+
+.score-chip.is-current {
+	background: var(--chip-color);
+	color: var(--color-primary-contrast);
+	transform: scale(1.08);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--chip-color) 40%, transparent);
+}
+
+.score-chip.is-current .score-chip-value {
+	color: inherit;
+}
+
+/* Question modal (gameplay) — a near-fullscreen dialog instead of an inline
+   card, so it dominates even a small low-res projector; the stats view stays
+   visible (dimmed by ::backdrop) behind it. */
+.question-modal {
+	width: min(95vw, 900px);
+	max-height: 92dvh;
+	margin: auto;
+	overflow-y: auto;
+	border: none;
+	border-radius: var(--radius-lg);
+	background: var(--color-surface);
+	color: var(--color-text);
+	box-shadow: var(--shadow-card);
+	padding: 2rem;
+	animation: modal-enter 0.2s ease;
+}
+
+.question-modal::backdrop {
+	background: rgba(0, 0, 0, 0.7);
+	animation: backdrop-enter 0.2s ease;
+}
+
+.feedback-message {
+	text-align: center;
+	font-weight: 600;
+	min-height: 1.5em;
+	margin: 0 0 0.5rem;
+}
+
+.question-text {
+	font-size: clamp(1.5rem, 5vw, 2.6rem);
+	font-weight: 700;
+	text-align: center;
+	line-height: 1.3;
+	margin: 0 0 1.5rem;
+	padding-bottom: 1.5rem;
+	border-bottom: 1px solid #fff1;
+}
+
+.options-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+@media (max-width: 600px) {
+	.options-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.option-button {
+	padding: 1.25rem 1rem;
+	border: 1px solid transparent;
+	border-radius: 1.5rem;
+	background: var(--color-surface-raised);
+	color: var(--color-text);
+	font-family: inherit;
+	/* Short answers (dates, single words) get the big size; long ones shrink to fit,
+	   without the cells themselves changing size. --option-chars is set per-button in JS. */
+	font-size: clamp(1.9rem, calc(3.8rem - var(--option-chars, 8) * 0.056rem), min(3.2rem, 12vw));
+	font-weight: 700;
+	text-align: center;
+	cursor: pointer;
+	animation: option-enter 0.3s ease backwards;
+	transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.2s ease, border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.option-button:nth-child(1) {
+	animation-delay: 0s;
+}
+
+.option-button:nth-child(2) {
+	animation-delay: 0.05s;
+}
+
+.option-button:nth-child(3) {
+	animation-delay: 0.1s;
+}
+
+.option-button:nth-child(4) {
+	animation-delay: 0.15s;
+}
+
+.option-button:hover:not(:disabled) {
+	transform: translateY(-2px);
+	background-color: #fff3;
+}
+
+.option-button:active:not(:disabled) {
+	transform: translateY(0);
+}
+
+.option-button:disabled {
+	cursor: default;
+}
+
+.option-button.is-correct {
+	background-color: #00ff9d6c;
+	border-color: #00ff9d;
+	transform: scale(1.1) translateY(-1rem);
+	box-shadow: 0 20px 30px #0004;
+	z-index: 1;
+}
+
+.option-button.is-wrong {
+	background-color: #ff00267c;
+	border-color: #5a1a00;
+	transform: scale(0.9) rotate(3deg);
+	opacity: 0.5;
+}
+
+@keyframes modal-enter {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes backdrop-enter {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes option-enter {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 /* Alerts */

@@ -2,7 +2,7 @@ import { loadAllPacks } from '../core/packs-repository.js';
 import { loadJSON, saveJSON } from '../core/storage.js';
 import { GameEngine } from '../engine/game-engine.js';
 
-const scoreboardListEl = document.getElementById('scoreboard-list');
+const scoreboardBarEl = document.getElementById('scoreboard-bar');
 const turnIndicatorEl = document.getElementById('turn-indicator');
 const feedbackMessageEl = document.getElementById('feedback-message');
 
@@ -12,9 +12,10 @@ const packOverrideLabelEl = document.getElementById('pack-override-label');
 const packOverrideSelectEl = document.getElementById('pack-override-select');
 const drawQuestionButton = document.getElementById('draw-question-button');
 
-const questionDisplayEl = document.getElementById('question-display');
+const questionModal = document.getElementById('question-modal');
 const questionTextEl = document.getElementById('question-text');
 const optionsListEl = document.getElementById('options-list');
+const continueButton = document.getElementById('continue-button');
 
 const groupOverrideSelectEl = document.getElementById('group-override-select');
 const overrideGroupButton = document.getElementById('override-group-button');
@@ -24,22 +25,38 @@ const rankingSectionEl = document.getElementById('ranking-section');
 const rankingListEl = document.getElementById('ranking-list');
 
 let engine = null;
-let lastFeedback = '';
+// The outcome of the answer just revealed, waiting for the GM to hit "Continuar"
+// before it's actually committed to the engine (see revealAnswer/continueButton below).
+let pendingIsCorrect = null;
 
 function persist() {
 	saveJSON('currentGame', engine.state);
 }
 
+function renderScoreChip(group, isCurrent) {
+	const chip = document.createElement('li');
+	chip.className = 'score-chip';
+	chip.classList.toggle('is-current', isCurrent);
+	chip.style.setProperty('--chip-color', group.color);
+
+	const name = document.createElement('span');
+	name.className = 'score-chip-name';
+	name.textContent = group.name;
+
+	const score = document.createElement('span');
+	score.className = 'score-chip-value';
+	score.textContent = group.score;
+
+	chip.appendChild(name);
+	chip.appendChild(score);
+	return chip;
+}
+
 function renderScoreboard() {
-	scoreboardListEl.innerHTML = '';
+	scoreboardBarEl.innerHTML = '';
 	engine.state.groups.forEach((group, index) => {
-		const li = document.createElement('li');
-		li.style.color = group.color;
-		li.textContent = `${group.name}: ${group.score} punto(s)`;
-		if (index === engine.state.currentGroupIndex && !engine.state.finished) {
-			li.textContent += ' (turno actual)';
-		}
-		scoreboardListEl.appendChild(li);
+		const isCurrent = index === engine.state.currentGroupIndex && !engine.state.finished;
+		scoreboardBarEl.appendChild(renderScoreChip(group, isCurrent));
 	});
 }
 
@@ -57,11 +74,9 @@ function renderGroupOverrideSelect() {
 function renderPlayArea() {
 	const group = engine.currentGroup;
 	turnIndicatorEl.textContent = `Le toca a: ${group.name}`;
-	feedbackMessageEl.textContent = lastFeedback;
 
 	const hasQuestion = Boolean(engine.state.currentQuestion);
 	drawControlsEl.hidden = hasQuestion;
-	questionDisplayEl.hidden = !hasQuestion;
 
 	packOverrideLabelEl.hidden = group.subscribedPackIds.length <= 1;
 	if (!packOverrideLabelEl.hidden) {
@@ -75,20 +90,26 @@ function renderPlayArea() {
 		});
 	}
 
-	if (hasQuestion) {
-		const { question } = engine.state.currentQuestion;
-		questionTextEl.textContent = question.text;
-		optionsListEl.innerHTML = '';
-		question.options.forEach((optionText, index) => {
-			const li = document.createElement('li');
-			const button = document.createElement('button');
-			button.type = 'button';
-			button.textContent = optionText;
-			button.addEventListener('click', () => answerQuestion(index === question.correctIndex, question));
-			li.appendChild(button);
-			optionsListEl.appendChild(li);
-		});
+	if (!hasQuestion) {
+		if (questionModal.open) questionModal.close();
+		return;
 	}
+
+	feedbackMessageEl.textContent = '';
+	continueButton.hidden = true;
+	const { question } = engine.state.currentQuestion;
+	questionTextEl.textContent = question.text;
+	optionsListEl.innerHTML = '';
+	question.options.forEach((optionText, index) => {
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.className = 'option-button';
+		button.textContent = optionText;
+		button.style.setProperty('--option-chars', optionText.length);
+		button.addEventListener('click', () => revealAnswer(index, question), { once: true });
+		optionsListEl.appendChild(button);
+	});
+	if (!questionModal.open) questionModal.showModal();
 }
 
 function renderRanking() {
@@ -98,12 +119,7 @@ function renderRanking() {
 
 	const ranking = [...engine.state.groups].sort((a, b) => b.score - a.score);
 	rankingListEl.innerHTML = '';
-	ranking.forEach((group) => {
-		const li = document.createElement('li');
-		li.style.color = group.color;
-		li.textContent = `${group.name}: ${group.score} punto(s)`;
-		rankingListEl.appendChild(li);
-	});
+	ranking.forEach((group) => rankingListEl.appendChild(renderScoreChip(group, false)));
 }
 
 function render() {
@@ -112,20 +128,37 @@ function render() {
 	if (!engine.state.finished) {
 		renderGroupOverrideSelect();
 		renderPlayArea();
+	} else if (questionModal.open) {
+		questionModal.close();
 	}
 }
 
-function answerQuestion(isCorrect, question) {
-	lastFeedback = isCorrect
+function revealAnswer(chosenIndex, question) {
+	const isCorrect = chosenIndex === question.correctIndex;
+	pendingIsCorrect = isCorrect;
+
+	optionsListEl.querySelectorAll('.option-button').forEach((button, index) => {
+		button.disabled = true;
+		if (index === question.correctIndex) {
+			button.classList.add('is-correct');
+		} else if (index === chosenIndex) {
+			button.classList.add('is-wrong');
+		}
+	});
+
+	feedbackMessageEl.textContent = isCorrect
 		? '¡Correcto!'
 		: `Incorrecto. La respuesta correcta era: ${question.options[question.correctIndex]}`;
-	engine.submitAnswer(isCorrect);
-	persist();
-	render();
+	continueButton.hidden = false;
 }
 
+continueButton.addEventListener('click', () => {
+	engine.submitAnswer(pendingIsCorrect);
+	persist();
+	render();
+});
+
 drawQuestionButton.addEventListener('click', () => {
-	lastFeedback = '';
 	const forcedPackId = packOverrideLabelEl.hidden ? undefined : packOverrideSelectEl.value;
 	engine.drawQuestion({ forcedPackId });
 	persist();
@@ -133,7 +166,6 @@ drawQuestionButton.addEventListener('click', () => {
 });
 
 overrideGroupButton.addEventListener('click', () => {
-	lastFeedback = '';
 	engine.setCurrentGroup(groupOverrideSelectEl.value);
 	persist();
 	render();

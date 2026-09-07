@@ -14,27 +14,20 @@
 		<h1>Partida</h1>
 	</header>
 
-	<main>
-		<section id="scoreboard-section">
-			<h2>Puntajes</h2>
-			<ul id="scoreboard-list"></ul>
-		</section>
-
+	<main class="stats-view">
 		<section id="play-section">
-			<p id="turn-indicator"></p>
-			<p id="feedback-message"></p>
+			<div id="scoreboard-bar" class="scoreboard-bar"></div>
+
+			<p id="turn-indicator" class="turn-indicator"></p>
 
 			<div id="draw-controls">
 				<label id="pack-override-label" hidden>
 					Elegir pack
 					<select id="pack-override-select"></select>
 				</label>
-				<button id="draw-question-button" type="button">Sacar pregunta</button>
-			</div>
-
-			<div id="question-display" hidden>
-				<p id="question-text"></p>
-				<ul id="options-list"></ul>
+				<button id="draw-question-button" class="button button-primary button-large" type="button">
+					Sacar pregunta
+				</button>
 			</div>
 
 			<div id="gm-controls">
@@ -42,18 +35,27 @@
 					Forzar turno de
 					<select id="group-override-select"></select>
 				</label>
-				<button id="override-group-button" type="button">Forzar turno</button>
+				<button id="override-group-button" class="button button-ghost" type="button">Forzar turno</button>
 			</div>
 
-			<button id="finish-game-button" type="button">Finalizar partida</button>
+			<button id="finish-game-button" class="button button-ghost" type="button">Finalizar partida</button>
 		</section>
 
 		<section id="ranking-section" hidden>
 			<h2>Resultado final</h2>
-			<ol id="ranking-list"></ol>
-			<a href="pack-select.html">Nueva partida</a>
+			<ol id="ranking-list" class="scoreboard-bar"></ol>
+			<a class="button button-primary button-large" href="pack-select.html">Nueva partida</a>
 		</section>
 	</main>
+
+	<dialog id="question-modal" class="question-modal">
+		<p id="feedback-message" class="feedback-message"></p>
+		<p id="question-text" class="question-text"></p>
+		<div id="options-list" class="options-grid"></div>
+		<button id="continue-button" class="button button-primary button-large" type="button" hidden>
+			Continuar
+		</button>
+	</dialog>
 
 	<script type="module" src="js/game/game-app.js"></script>
 </body>
