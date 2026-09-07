@@ -16,29 +16,21 @@
 
 	<main class="stats-view">
 		<section id="play-section">
-			<div id="scoreboard-bar" class="scoreboard-bar"></div>
-
-			<p id="turn-indicator" class="turn-indicator"></p>
-
 			<div id="draw-controls">
 				<label id="pack-override-label" hidden>
 					Elegir pack
 					<select id="pack-override-select"></select>
 				</label>
-				<button id="draw-question-button" class="button button-primary button-large" type="button">
+				<button id="draw-question-button" class="button button-primary button-large roll-button" type="button">
 					Sacar pregunta
 				</button>
 			</div>
 
-			<div id="gm-controls">
-				<label>
-					Forzar turno de
-					<select id="group-override-select"></select>
-				</label>
-				<button id="override-group-button" class="button button-ghost" type="button">Forzar turno</button>
-			</div>
+			<button id="finish-game-button" class="button button-ghost button-large" type="button">
+				Finalizar partida
+			</button>
 
-			<button id="finish-game-button" class="button button-ghost" type="button">Finalizar partida</button>
+			<ul id="team-card-list" class="team-card-list"></ul>
 		</section>
 
 		<section id="ranking-section" hidden>
@@ -52,8 +44,8 @@
 		<p id="feedback-message" class="feedback-message"></p>
 		<p id="question-text" class="question-text"></p>
 		<div id="options-list" class="options-grid"></div>
-		<button id="continue-button" class="button button-primary button-large" type="button" hidden>
-			Continuar
+		<button id="confirm-button" class="button button-ghost button-large" type="button">
+			Confirmar
 		</button>
 	</dialog>
 
