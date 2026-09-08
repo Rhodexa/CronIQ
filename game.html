@@ -42,12 +42,16 @@
 	</main>
 
 	<dialog id="question-modal" class="question-modal">
-		<p id="feedback-message" class="feedback-message"></p>
-		<p id="question-text" class="question-text"></p>
-		<div id="options-list" class="options-grid"></div>
-		<button id="confirm-button" class="button button-ghost button-large" type="button">
-			Confirmar
-		</button>
+		<div class="question-modal-header">
+			<p id="feedback-message" class="feedback-message"></p>
+			<p id="question-text" class="question-text"></p>
+		</div>
+		<div class="question-modal-body">
+			<div id="options-list" class="options-grid"></div>
+			<button id="confirm-button" class="button button-ghost button-large" type="button">
+				Confirmar
+			</button>
+		</div>
 	</dialog>
 
 	<script type="module" src="js/game/game-app.js"></script>

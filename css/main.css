@@ -680,23 +680,40 @@ button[type="submit"]:not(.button) {
 	/* Keeps the top from getting scrolled out of view if a long question forces
 	   internal scroll and focus moves to the confirm button below the fold. */
 	scroll-padding: 1.5rem;
-	/* Themed per the team currently playing — set as --current-team-color in JS.
-	   A solid color border read as an error state (especially in red), so the
-	   team color is a muted background tint plus a soft ambient glow instead. */
 	border: none;
 	border-radius: var(--radius-lg);
-	background: color-mix(in srgb, var(--current-team-color, transparent) 10%, var(--color-surface));
+	/* Neutral now — the team color lives on .question-modal-header instead, as
+	   a real element rather than a gradient hack faking a two-tone split. */
+	background: var(--color-surface);
 	color: var(--color-text);
 	/* The glow: X-offset, Y-offset, blur radius, then the color itself (mixed
 	   with the team color at N% strength — raise that % for a more saturated
 	   glow, raise the blur px to spread it further, tweak the Y-offset to
 	   shift where the "light" seems to come from). Second shadow is unrelated
 	   — that's the normal card drop-shadow underneath it. */
-	box-shadow: 0 30px 120px color-mix(in srgb, var(--current-team-color, transparent) 45%, transparent),
+	box-shadow: 0 120px 120px color-mix(in srgb, var(--current-team-color, transparent) 30%, transparent),
 		var(--shadow-card);
-	padding: 2rem;
+	/* Padding-less: .question-modal-header/.question-modal-body own their own
+	   padding now, so the header's color can run edge-to-edge as a real "cap"
+	   instead of floating inset with the modal's neutral background around it. */
+	padding: 0;
 	animation: modal-enter 0.2s ease;
 	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The overflow-y: auto above already puts overflow-x into "auto" too (per the
+   CSS overflow spec, one non-visible axis forces the other off "visible"),
+   which is what lets border-radius actually clip the header's square top
+   corners into the dialog's own rounded ones — no extra rule needed for that. */
+.question-modal-header {
+	padding: 2rem 2rem 1.5rem;
+	background: color-mix(in srgb, var(--current-team-color, var(--color-surface)) 60%, #000);
+	transition: background-color 0.3s ease;
+}
+
+.question-modal-body {
+	padding: 1.5rem 2rem 2rem;
+	background: var(--color-surface);
 }
 
 /* display must stay scoped to [open] — an unconditional `display` on the base
@@ -732,6 +749,7 @@ button[type="submit"]:not(.button) {
 	margin: 0 0 1.5rem;
 	padding-bottom: 1.5rem;
 	border-bottom: 1px solid #fff1;
+	height: 33%;
 }
 
 /* Draw suspense — a brief "what's it gonna be?" beat before the real question
@@ -793,7 +811,7 @@ button[type="submit"]:not(.button) {
 	overflow-wrap: break-word;
 	/* Translucent instead of a flat color, so it lightens whatever the modal's
 	   team-tinted background happens to be instead of clashing against it. */
-	background: rgba(255, 255, 255, 0.05);
+	background: rgba(0, 0, 0, 0.3);
 	color: var(--color-text);
 	font-family: inherit;
 	/* Short answers (dates, single words) get the big size; long ones shrink to fit,
