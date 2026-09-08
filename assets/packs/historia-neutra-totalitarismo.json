@@ -1,0 +1,31 @@
+{
+  "id": "historia-neutra-totalitarismo",
+  "name": "Historia: Totalitarismo (general)",
+  "category": "Historia",
+  "color": "#6d6d6d",
+  "questions": [
+    {
+      "id": "n-1",
+      "text": "¿Qué autor define al totalitarismo como uno de los fenómenos políticos, sociales y económicos característicos de la primera mitad del siglo XX?",
+      "options": ["Hannah Arendt", "Vicens Vives", "Adolf Hitler", "Víctor Manuel III"],
+      "correctIndex": 1
+    },
+    {
+      "id": "n-2",
+      "text": "¿Qué autora sostiene que el totalitarismo busca controlar no solo la política sino también la vida social?",
+      "options": ["Hannah Arendt", "Eva Perón", "Rosa Luxemburgo", "Marie Curie"],
+      "correctIndex": 0
+    },
+    {
+      "id": "n-3",
+      "text": "¿Cuál es la diferencia principal entre un gobierno autoritario y uno totalitario?",
+      "options": [
+        "El autoritario concentra el poder, mientras que el totalitario busca además controlar y transformar profundamente toda la sociedad.",
+        "El autoritario siempre es democrático y el totalitario siempre realiza elecciones.",
+        "El autoritario solo existe en Europa y el totalitario solo en América.",
+        "No existe ninguna diferencia entre ambos."
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

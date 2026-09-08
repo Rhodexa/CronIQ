@@ -4,15 +4,15 @@ import { loadJSON, saveJSON } from '../core/storage.js';
 import { GameEngine } from '../engine/game-engine.js';
 
 const COLOR_PRESETS = [
-	'#e74c3c',
-	'#e67e22',
-	'#f1c40f',
-	'#2ecc71',
-	'#1abc9c',
-	'#3498db',
-	'#5b5bd6',
-	'#9b59b6',
-	'#e84393',
+	'#ff3b3b',
+	'#ff7f11',
+	'#ffd60a',
+	'#22e07a',
+	'#00d9a3',
+	'#4a6cf7',
+	'#6c5ce7',
+	'#b04dff',
+	'#ff2d95',
 	'#95a5a6',
 	'#ffffff',
 ];

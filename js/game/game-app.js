@@ -3,14 +3,15 @@ import { loadJSON, saveJSON } from '../core/storage.js';
 import { GameEngine } from '../engine/game-engine.js';
 
 const REVEAL_SUSPENSE_MS = 1000;
+const DRAW_SUSPENSE_MS = 900;
 
 const teamCardListEl = document.getElementById('team-card-list');
+const scoreWheelEl = document.getElementById('score-wheel');
+const scoreWheelLegendEl = document.getElementById('score-wheel-legend');
 const feedbackMessageEl = document.getElementById('feedback-message');
 
 const playSectionEl = document.getElementById('play-section');
 const drawControlsEl = document.getElementById('draw-controls');
-const packOverrideLabelEl = document.getElementById('pack-override-label');
-const packOverrideSelectEl = document.getElementById('pack-override-select');
 const drawQuestionButton = document.getElementById('draw-question-button');
 
 const questionModal = document.getElementById('question-modal');
@@ -54,6 +55,54 @@ function renderScoreChip(group, isCurrent) {
 	return chip;
 }
 
+function renderScoreWheel() {
+	const groups = engine.state.groups;
+	const totalScore = groups.reduce((sum, group) => sum + group.score, 0);
+	const maxScore = Math.max(...groups.map((group) => group.score));
+	const leaders = groups.filter((group) => group.score === maxScore);
+	const isTie = maxScore === 0 || leaders.length > 1;
+
+	if (totalScore === 0) {
+		// A colored 50/50 split at 0-0 reads as if everyone already has points.
+		// Stay neutral until someone actually scores.
+		scoreWheelEl.style.background = 'var(--color-surface-raised)';
+	} else {
+		let cumulativePercent = 0;
+		const stops = groups.map((group) => {
+			const start = cumulativePercent;
+			cumulativePercent += (group.score / totalScore) * 100;
+			return `${group.color} ${start}% ${cumulativePercent}%`;
+		});
+		scoreWheelEl.style.background = `conic-gradient(${stops.join(', ')})`;
+	}
+
+	scoreWheelLegendEl.innerHTML = '';
+	groups.forEach((group) => {
+		const li = document.createElement('li');
+		li.className = 'score-wheel-legend-item';
+		li.classList.toggle('is-leading', !isTie && group.score === maxScore);
+
+		const crown = document.createElement('span');
+		crown.className = 'score-wheel-crown';
+		crown.innerHTML =
+			'<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 19h18l-1.5-9-5 4-3-8-3 8-5-4z"></path></svg>';
+		li.appendChild(crown);
+
+		const value = document.createElement('span');
+		value.className = 'score-wheel-legend-value';
+		value.style.color = group.color;
+		value.textContent = group.score;
+		li.appendChild(value);
+
+		const name = document.createElement('span');
+		name.className = 'score-wheel-legend-name';
+		name.textContent = group.name;
+		li.appendChild(name);
+
+		scoreWheelLegendEl.appendChild(li);
+	});
+}
+
 function renderTeamCard(group, isCurrent) {
 	const li = document.createElement('li');
 	li.className = 'team-card';
@@ -73,17 +122,10 @@ function renderTeamCard(group, isCurrent) {
 	});
 	li.appendChild(checkButton);
 
-	const info = document.createElement('div');
-	info.className = 'team-card-info';
 	const name = document.createElement('span');
 	name.className = 'team-card-name';
 	name.textContent = group.name;
-	const score = document.createElement('span');
-	score.className = 'team-card-score';
-	score.innerHTML = `<strong>${group.score}</strong> punto(s)`;
-	info.appendChild(name);
-	info.appendChild(score);
-	li.appendChild(info);
+	li.appendChild(name);
 
 	return li;
 }
@@ -99,10 +141,27 @@ function renderTeamCards() {
 function resetConfirmButton() {
 	revealPhase = 'picking';
 	selectedIndex = null;
+	confirmButton.hidden = false;
 	confirmButton.textContent = 'Confirmar';
 	confirmButton.classList.remove('button-primary');
 	confirmButton.classList.add('button-ghost');
 	confirmButton.disabled = true;
+}
+
+function showDrawSuspense(group) {
+	feedbackMessageEl.textContent = '';
+	questionModal.style.setProperty('--current-team-color', group.color);
+	questionTextEl.textContent = '¿Qué te va a tocar…?';
+	questionTextEl.classList.add('is-suspense');
+	optionsListEl.innerHTML = '';
+	for (let i = 0; i < 4; i++) {
+		const placeholder = document.createElement('div');
+		placeholder.className = 'option-placeholder';
+		optionsListEl.appendChild(placeholder);
+	}
+	confirmButton.hidden = true;
+	questionModal.scrollTop = 0;
+	if (!questionModal.open) questionModal.showModal();
 }
 
 function renderPlayArea() {
@@ -112,18 +171,6 @@ function renderPlayArea() {
 	const hasQuestion = Boolean(engine.state.currentQuestion);
 	drawControlsEl.hidden = hasQuestion;
 
-	packOverrideLabelEl.hidden = group.subscribedPackIds.length <= 1;
-	if (!packOverrideLabelEl.hidden) {
-		packOverrideSelectEl.innerHTML = '';
-		group.subscribedPackIds.forEach((packId) => {
-			const pack = engine.packsById[packId];
-			const option = document.createElement('option');
-			option.value = pack.id;
-			option.textContent = pack.name;
-			packOverrideSelectEl.appendChild(option);
-		});
-	}
-
 	if (!hasQuestion) {
 		if (questionModal.open) questionModal.close();
 		return;
@@ -131,6 +178,7 @@ function renderPlayArea() {
 
 	feedbackMessageEl.textContent = '';
 	resetConfirmButton();
+	questionTextEl.classList.remove('is-suspense');
 	// A long previous question can leave the dialog scrolled; a shorter one
 	// afterwards would otherwise reopen still scrolled past its own top.
 	questionModal.scrollTop = 0;
@@ -160,6 +208,7 @@ function renderRanking() {
 }
 
 function render() {
+	renderScoreWheel();
 	renderTeamCards();
 	renderRanking();
 	if (!engine.state.finished) {
@@ -222,10 +271,14 @@ confirmButton.addEventListener('click', () => {
 });
 
 drawQuestionButton.addEventListener('click', () => {
-	const forcedPackId = packOverrideLabelEl.hidden ? undefined : packOverrideSelectEl.value;
-	engine.drawQuestion({ forcedPackId });
-	persist();
-	render();
+	drawQuestionButton.disabled = true;
+	showDrawSuspense(engine.currentGroup);
+	setTimeout(() => {
+		drawQuestionButton.disabled = false;
+		engine.drawQuestion();
+		persist();
+		render();
+	}, DRAW_SUSPENSE_MS);
 });
 
 finishGameButton.addEventListener('click', () => {

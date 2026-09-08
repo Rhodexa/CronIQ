@@ -1,44 +1,107 @@
 {
-  "id": "historia-italia",
-  "name": "Historia de Italia",
+  "id": "historia-italia-fascismo",
+  "name": "Historia de Italia: el Fascismo",
   "category": "Historia",
-  "color": "#3b8f4f",
+  "color": "#2e7d32",
   "questions": [
     {
       "id": "it-1",
-      "text": "¿En qué año se proclamó el Reino de Italia, marcando su unificación?",
-      "options": ["1848", "1861", "1870", "1900"],
+      "text": "¿Quién dirigió el fascismo italiano?",
+      "options": [
+        "Adolf Hitler",
+        "Benito Mussolini",
+        "Paul von Hindenburg",
+        "Víctor Manuel III"
+      ],
       "correctIndex": 1
     },
     {
       "id": "it-2",
-      "text": "¿Cómo se conoce al movimiento de unificación italiana del siglo XIX?",
-      "options": ["Risorgimento", "Renacimiento", "Resistencia", "Reforma"],
+      "text": "¿Qué territorios obtuvo Italia tras la Primera Guerra Mundial?",
+      "options": [
+        "Trentino, Trieste y parte de Istria.",
+        "Berlín, Baviera y Hamburgo.",
+        "París, Marsella y Lyon.",
+        "Sicilia, Roma y Venecia, que antes pertenecían a Francia."
+      ],
       "correctIndex": 0
     },
     {
       "id": "it-3",
-      "text": "¿Quién fue el líder militar conocido por la expedición de los Mil Camisas Rojas?",
-      "options": ["Camillo Cavour", "Victor Manuel II", "Giuseppe Garibaldi", "Giuseppe Mazzini"],
+      "text": "¿En qué año se produjeron las ocupaciones de fábricas en Milán?",
+      "options": [
+        "1914",
+        "1919",
+        "1920",
+        "1939"
+      ],
       "correctIndex": 2
     },
     {
       "id": "it-4",
-      "text": "¿En qué año cayó el Imperio Romano de Occidente?",
-      "options": ["376 d.C.", "410 d.C.", "455 d.C.", "476 d.C."],
-      "correctIndex": 3
+      "text": "¿Cómo se llamaban los grupos de excombatientes que se sumaron a los Fasci di Combattimento?",
+      "options": [
+        "Los Camisas Rojas",
+        "Los arditi",
+        "Los Reichstag",
+        "Los Partisanos Romanos"
+      ],
+      "correctIndex": 1
     },
     {
       "id": "it-5",
-      "text": "¿Qué ciudad italiana fue la cuna del Renacimiento?",
-      "options": ["Roma", "Venecia", "Florencia", "Milán"],
-      "correctIndex": 2
+      "text": "¿En qué año fueron organizados los Fasci di Combattimento y por quién?",
+      "options": [
+        "1919, por Benito Mussolini.",
+        "1922, por Adolf Hitler.",
+        "1933, por Paul von Hindenburg.",
+        "1945, por los aliados."
+      ],
+      "correctIndex": 0
     },
     {
       "id": "it-6",
-      "text": "¿En qué año llegó Benito Mussolini al poder tras la Marcha sobre Roma?",
-      "options": ["1919", "1922", "1929", "1936"],
+      "text": "¿Cómo se llamaban los fascistas organizados militarmente que marcharon sobre Roma?",
+      "options": [
+        "Camisas negras",
+        "Camisas blancas",
+        "Guardias del Reich",
+        "Legiones imperiales"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "it-7",
+      "text": "¿Qué rey aceptó las condiciones de los fascistas en 1922?",
+      "options": [
+        "Guillermo II",
+        "Víctor Manuel III",
+        "Francisco José I",
+        "Carlos V"
+      ],
       "correctIndex": 1
+    },
+    {
+      "id": "it-8",
+      "text": "¿Qué alianza formaron Italia y Alemania en la segunda mitad de la década de 1930?",
+      "options": [
+        "Pacto de Varsovia",
+        "Triple Entente",
+        "Eje Roma-Berlín",
+        "Liga Mediterránea"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "it-9",
+      "text": "¿En qué fecha fue ejecutado Mussolini y quiénes lo capturaron?",
+      "options": [
+        "28 de abril de 1945, fue capturado por miembros de la resistencia italiana.",
+        "30 de enero de 1933, fue capturado por el ejército alemán.",
+        "10 de junio de 1940, fue capturado por las tropas francesas.",
+        "8 de mayo de 1945, fue capturado por el rey Víctor Manuel III."
+      ],
+      "correctIndex": 0
     }
   ]
 }

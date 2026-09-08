@@ -405,7 +405,7 @@ button[type="submit"]:not(.button) {
 	height: 18px;
 	flex-shrink: 0;
 	border-radius: 5px;
-	background: var(--color-surface-raised);
+	background: #fff4;
 }
 
 .check-icon svg {
@@ -432,6 +432,7 @@ button[type="submit"]:not(.button) {
 	color: var(--color-text);
 	box-shadow: var(--shadow-card);
 	padding: 1.25rem;
+	flex-direction: column;
 }
 
 .pack-picker-dialog::backdrop {
@@ -445,7 +446,7 @@ button[type="submit"]:not(.button) {
 .pack-picker-options {
 	display: flex;
 	flex-direction: column;
-	gap: 0.2rem;
+	gap: 0.5rem;
 	max-height: 50vh;
 	overflow-y: auto;
 	margin: 0.75rem 0;
@@ -548,25 +549,81 @@ button[type="submit"]:not(.button) {
 	stroke-dashoffset: 0;
 }
 
-.team-card-info {
-	display: flex;
-	flex-direction: column;
-	gap: 0.15rem;
-}
-
 .team-card-name {
 	font-size: 1.2rem;
 	font-weight: 700;
 }
 
-.team-card-score {
-	color: var(--color-text-muted);
-	font-size: 0.95rem;
+/* Score wheel (gameplay) — a pure-CSS conic-gradient donut, no chart library.
+   Each team's slice is sized by their share of the total score; the legend
+   below carries the big numbers everyone in the room actually reads. */
+.score-wheel-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.5rem;
+	margin: 0 0 1.5rem;
+	padding: 2rem 1.5rem;
+	background: var(--color-surface);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-card);
 }
 
-.team-card-score strong {
-	color: var(--group-color);
-	font-size: 1.1rem;
+.score-wheel {
+	position: relative;
+	width: clamp(140px, 30vw, 220px);
+	aspect-ratio: 1 / 1;
+	border-radius: 50%;
+	background: var(--color-surface-raised);
+	transition: background 0.4s ease;
+}
+
+.score-wheel::before {
+	content: "";
+	position: absolute;
+	inset: 20%;
+	border-radius: 50%;
+	background: var(--color-surface);
+}
+
+.score-wheel-legend {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 2rem;
+}
+
+.score-wheel-legend-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.1rem;
+}
+
+.score-wheel-crown {
+	display: none;
+	color: #ffd23f;
+	margin-bottom: 0.1rem;
+	transform: scale(3);
+}
+
+.score-wheel-legend-item.is-leading .score-wheel-crown {
+	display: block;
+}
+
+.score-wheel-legend-value {
+	font-size: clamp(3.2rem, 8vw, 4.5rem);
+	font-weight: 800;
+	line-height: 1;
+}
+
+.score-wheel-legend-name {
+	font-size: 0.95rem;
+	color: var(--color-text-muted);
+	font-weight: 600;
 }
 
 /* Scoreboard bar (final ranking) */
@@ -620,20 +677,39 @@ button[type="submit"]:not(.button) {
 	max-height: 92dvh;
 	margin: auto;
 	overflow-y: auto;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	/* Keeps the top from getting scrolled out of view if a long question forces
 	   internal scroll and focus moves to the confirm button below the fold. */
 	scroll-padding: 1.5rem;
-	/* Colored per the team currently playing — set as --current-team-color in JS. */
-	border: 4px solid var(--current-team-color, transparent);
+	/* Themed per the team currently playing — set as --current-team-color in JS.
+	   A solid color border read as an error state (especially in red), so the
+	   team color is a muted background tint plus a soft ambient glow instead. */
+	border: none;
 	border-radius: var(--radius-lg);
-	background: var(--color-surface);
+	background: color-mix(in srgb, var(--current-team-color, transparent) 10%, var(--color-surface));
 	color: var(--color-text);
-	box-shadow: var(--shadow-card);
+	/* The glow: X-offset, Y-offset, blur radius, then the color itself (mixed
+	   with the team color at N% strength — raise that % for a more saturated
+	   glow, raise the blur px to spread it further, tweak the Y-offset to
+	   shift where the "light" seems to come from). Second shadow is unrelated
+	   — that's the normal card drop-shadow underneath it. */
+	box-shadow: 0 30px 120px color-mix(in srgb, var(--current-team-color, transparent) 45%, transparent),
+		var(--shadow-card);
 	padding: 2rem;
 	animation: modal-enter 0.2s ease;
+	transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* display must stay scoped to [open] — an unconditional `display` on the base
+   .question-modal rule is an author style, which beats the browser's own
+   `dialog:not([open]) { display: none }` even though that's more specific
+   (author origin always wins over user-agent origin). Without this scoping,
+   closing the dialog removes [open] but it stays forced visible, falling out
+   of the top layer and rendering inline wherever it sits in the DOM (here,
+   at the very bottom of the page) instead of actually disappearing. */
+.question-modal[open] {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .question-modal::backdrop {
@@ -658,6 +734,42 @@ button[type="submit"]:not(.button) {
 	border-bottom: 1px solid #fff1;
 }
 
+/* Draw suspense — a brief "what's it gonna be?" beat before the real question
+   lands, instead of it just appearing instantly. */
+.question-text.is-suspense {
+	animation: suspense-pulse 0.6s ease-in-out infinite;
+}
+
+.option-placeholder {
+	min-height: 5.5rem;
+	border-radius: 2rem;
+	background: linear-gradient(90deg, var(--color-surface-raised) 25%, #ffffff17 37%, var(--color-surface-raised) 63%);
+	background-size: 400% 100%;
+	animation: option-placeholder-shimmer 1.1s ease-in-out infinite;
+}
+
+@keyframes suspense-pulse {
+
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.4;
+	}
+}
+
+@keyframes option-placeholder-shimmer {
+	0% {
+		background-position: 100% 0;
+	}
+
+	100% {
+		background-position: 0 0;
+	}
+}
+
 .options-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -679,7 +791,9 @@ button[type="submit"]:not(.button) {
 	   modal instead of wrapping. min-width: 0 hands sizing back to the grid. */
 	min-width: 0;
 	overflow-wrap: break-word;
-	background: var(--color-surface-raised);
+	/* Translucent instead of a flat color, so it lightens whatever the modal's
+	   team-tinted background happens to be instead of clashing against it. */
+	background: rgba(255, 255, 255, 0.05);
 	color: var(--color-text);
 	font-family: inherit;
 	/* Short answers (dates, single words) get the big size; long ones shrink to fit,
@@ -695,23 +809,30 @@ button[type="submit"]:not(.button) {
 
 .option-button:nth-child(1) {
 	animation-delay: 0s;
+	border-left: 12px solid rgb(255, 0, 136);
+	border-radius: 2rem 2rem 0 2rem;
 }
 
 .option-button:nth-child(2) {
 	animation-delay: 0.05s;
+	border-right: 12px solid rgb(0, 166, 255);
+	border-radius: 2rem 2rem 2rem 0;
 }
 
 .option-button:nth-child(3) {
 	animation-delay: 0.1s;
+	border-left: 12px solid rgb(0, 255, 76);
+	border-radius: 2rem 0 2rem 2rem;
 }
 
 .option-button:nth-child(4) {
 	animation-delay: 0.15s;
+	border-right: 12px solid rgb(255, 217, 0);
+	border-radius: 0 2rem 2rem 2rem;
 }
 
 .option-button:hover:not(:disabled) {
 	transform: translateY(-2px);
-	background-color: #fff3;
 }
 
 .option-button:active:not(:disabled) {

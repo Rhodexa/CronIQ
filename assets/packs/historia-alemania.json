@@ -1,43 +1,139 @@
 {
-  "id": "historia-alemania",
-  "name": "Historia de Alemania",
+  "id": "historia-alemania-weimar-nazismo",
+  "name": "Historia de Alemania: de Weimar al Nazismo",
   "category": "Historia",
   "color": "#c9a227",
   "questions": [
     {
       "id": "de-1",
-      "text": "¿En qué año se unificó el Imperio Alemán bajo Prusia?",
-      "options": ["1848", "1861", "1871", "1890"],
-      "correctIndex": 2
-    },
-    {
-      "id": "de-2",
-      "text": "¿Quién fue el canciller conocido como el 'Canciller de Hierro'?",
-      "options": ["Otto von Bismarck", "Konrad Adenauer", "Paul von Hindenburg", "Guillermo II"],
+      "text": "¿En qué año se estableció la República de Weimar?",
+      "options": [
+        "1919",
+        "1933",
+        "1945",
+        "1871"
+      ],
       "correctIndex": 0
     },
     {
+      "id": "de-2",
+      "text": "¿Cómo se llamaba la cámara única creada por la Constitución de Weimar?",
+      "options": [
+        "Senado Imperial",
+        "Reichstag",
+        "Parlamento Nacional Fascista",
+        "Asamblea de Roma"
+      ],
+      "correctIndex": 1
+    },
+    {
       "id": "de-3",
-      "text": "¿En qué año cayó el Muro de Berlín?",
-      "options": ["1985", "1989", "1991", "1993"],
+      "text": "¿Qué idea difundían los grupos conservadores sobre la derrota alemana en la Primera Guerra Mundial?",
+      "options": [
+        "Que Alemania había perdido porque tenía pocos territorios.",
+        "Que el ejército alemán había sido \"apuñalado por la espalda\" por republicanos y socialistas.",
+        "Que Alemania había decidido abandonar voluntariamente la guerra.",
+        "Que la derrota había sido causada por una invasión de dinosaurios franceses."
+      ],
       "correctIndex": 1
     },
     {
       "id": "de-4",
-      "text": "¿Qué tratado puso fin oficialmente a la Primera Guerra Mundial para Alemania?",
-      "options": ["Tratado de Versalles", "Tratado de Berlín", "Tratado de Viena", "Tratado de Postdam"],
-      "correctIndex": 0
-    },
-    {
-      "id": "de-5",
-      "text": "¿En qué año se reunificaron Alemania Oriental y Occidental?",
-      "options": ["1988", "1989", "1990", "1991"],
+      "text": "¿Qué región ocuparon las fuerzas francesas para garantizar el pago de las reparaciones de guerra?",
+      "options": [
+        "Baviera",
+        "Berlín",
+        "Ruhr",
+        "Alsacia"
+      ],
       "correctIndex": 2
     },
     {
+      "id": "de-5",
+      "text": "¿En qué ciudad descubrió Hitler su vocación política?",
+      "options": [
+        "Múnich",
+        "París",
+        "Roma",
+        "Viena"
+      ],
+      "correctIndex": 0
+    },
+    {
       "id": "de-6",
-      "text": "¿Qué imperio alemán antecedió al Imperio Alemán de 1871?",
-      "options": ["Sacro Imperio Romano Germánico", "Imperio Austrohúngaro", "Confederación del Rin", "Liga Hanseática"],
+      "text": "¿Cómo se llamaba originalmente el partido que luego sería conocido como partido nazi?",
+      "options": [
+        "Partido Nacional Alemán Unido",
+        "Partido Obrero Nacionalsocialista Alemán",
+        "Partido Socialista de Weimar",
+        "Partido Imperial de Baviera"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "de-7",
+      "text": "¿Qué intentó hacer Hitler en Múnich en 1923 y qué consecuencia tuvo para él?",
+      "options": [
+        "Intentó realizar un golpe de Estado y terminó encarcelado.",
+        "Intentó convertirse en presidente y fue elegido por unanimidad.",
+        "Intentó organizar una huelga y fue expulsado de Alemania.",
+        "Intentó fundar una universidad y recibió un premio."
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "de-8",
+      "text": "¿Qué hecho económico de 1929 volvió a agravar la crisis en Alemania?",
+      "options": [
+        "La Revolución Industrial",
+        "La crisis económica mundial de 1929",
+        "La caída del Imperio romano",
+        "La creación del euro"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "de-9",
+      "text": "¿Quién era el presidente de Alemania que nombró canciller a Hitler?",
+      "options": [
+        "Benito Mussolini",
+        "Hermann Göring",
+        "Paul von Hindenburg",
+        "Franz von Papen"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "de-10",
+      "text": "¿En qué fecha exacta Hitler fue nombrado canciller de Alemania?",
+      "options": [
+        "28 de junio de 1919",
+        "30 de enero de 1933",
+        "5 de marzo de 1933",
+        "8 de mayo de 1945"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "de-11",
+      "text": "¿Quién fue el colaborador de Hitler que participó en el control de la administración y la policía?",
+      "options": [
+        "Franz von Papen",
+        "Paul von Hindenburg",
+        "Hermann Göring",
+        "Karl Marx"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "de-12",
+      "text": "¿Qué le concedió el Parlamento a Hitler después de las elecciones de marzo de 1933, y qué le permitió lograr?",
+      "options": [
+        "Poderes excepcionales, que le permitieron consolidar su dictadura.",
+        "El título de emperador, que le permitió recuperar el Imperio alemán.",
+        "El control de Francia, que le permitió comenzar la guerra.",
+        "El derecho a disolver Alemania y trasladar la capital a Roma."
+      ],
       "correctIndex": 0
     }
   ]
